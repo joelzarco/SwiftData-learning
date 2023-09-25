@@ -13,17 +13,23 @@ struct MovieListView : View {
     // queries can be sorted from macro @Query
     @Query(sort: \Movie.title, order: .reverse) private var movies : [Movie]
     @State private var isAddMoviePresented : Bool = false
+    @Environment(\.modelContext) private var context
     
     var body: some View {
-        List(movies){ movie in
-            HStack{
-                Text(movie.title)
-                    .font(.title2).bold()
-                Spacer()
-                Text("\(movie.year) AD")
-                    .font(.caption)
+        List{
+            ForEach(movies){ movie in // forEach added for delete capability
+                HStack{
+                    Text(movie.title)
+                        .font(.title3).bold()
+                    Spacer()
+                    Text(movie.year.description)
+                        .font(.caption)
+                }
             }
-        }
+            .onDelete(perform: { indexSet in
+                deleteMovie(indexSet: indexSet)
+            })
+        } // List
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add Movie"){
@@ -36,5 +42,19 @@ struct MovieListView : View {
                 AddMovieView()
             }
         })
-    }
+    } // some V
+    
+    private func deleteMovie(indexSet : IndexSet){
+        indexSet.forEach { index in
+            let movie = movies[index]
+            context.delete(movie)
+            do{
+                try context.save()
+            }
+            catch{
+                print(error.localizedDescription)
+            }
+        }
+    } // func
+    
 }
