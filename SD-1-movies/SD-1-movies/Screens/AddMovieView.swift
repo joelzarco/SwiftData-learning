@@ -26,7 +26,7 @@ struct AddMovieView: View {
                 TextField("Title", text: $title)
                 TextField("Year", value: $year, format: .number)
             }
-            
+            .navigationTitle("Add movie")
         }
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
@@ -43,6 +43,7 @@ struct AddMovieView: View {
                     context.insert(movie)
                     do{
                         try context.save()
+                        dismiss()
                     }
                     catch{
                         print(error.localizedDescription)

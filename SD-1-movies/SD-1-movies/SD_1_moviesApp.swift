@@ -13,7 +13,8 @@ struct SD_1_moviesApp: App {
         WindowGroup {
 //            ContentView()
             NavigationStack{
-                AddMovieView()
+//                AddMovieView()
+                MovieListView()
             }
         }
         .modelContainer(for: [Movie.self])
