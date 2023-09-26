@@ -25,6 +25,7 @@ struct AddMovieView: View {
             Form{
                 TextField("Title", text: $title)
                 TextField("Year", value: $year, format: .number)
+                    .keyboardType(.numberPad)
             }
             .navigationTitle("Add movie")
         }

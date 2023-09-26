@@ -18,18 +18,23 @@ struct MovieListView : View {
     var body: some View {
         List{
             ForEach(movies){ movie in // forEach added for delete capability
-                HStack{
-                    Text(movie.title)
-                        .font(.title3).bold()
-                    Spacer()
-                    Text(movie.year.description)
-                        .font(.caption)
-                }
-            }
+                NavigationLink(value: movie) {
+                    HStack{
+                        Text(movie.title)
+                            .font(.title3).bold()
+                        Spacer()
+                        Text(movie.year.description)
+                            .font(.caption)
+                    } // hs
+                } // navL
+            } // forE
             .onDelete(perform: { indexSet in
                 deleteMovie(indexSet: indexSet)
             })
         } // List
+        .navigationDestination(for: Movie.self, destination: { movie in
+            MovieDetailView(movie: movie)
+        })
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Add Movie"){
